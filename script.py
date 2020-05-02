@@ -11,7 +11,6 @@ import os,sys
 def stop(source):
     Gtk.main_quit()
 def get_data(command):
-
     global resp
     global soup
     global confirmed
@@ -19,13 +18,20 @@ def get_data(command):
     global deaths
     try:
         resp = req.get("https://news.google.com/covid19/map?hl=en-US&gl=US&ceid=US:en")
+    except:
+        print('Error connection! Please connect to internet and try again.')
+        sys.exit()
+    try:
         soup = BeautifulSoup(resp.text, 'lxml')
         confirmed = soup.findAll("div",{'class','UvMayb'})[0].string
         recovered = soup.findAll("div",{'class','UvMayb'})[1].string
         deaths = soup.findAll("div",{'class','UvMayb'})[2].string
     except:
-        print('Error connection! Please connect to internet and try again.')
-        sys.exit()
+        print('Something went wrong...\n Trying install packeges and run again.')
+        os.system('pip3 install bs4\npip3 install lxml')
+        print('Packages has been installed, restarting...')
+        os.execl(sys.executable, sys.executable, *sys.argv)
+
 get_data('run')
 def create_menu():
     menu = Gtk.Menu()
