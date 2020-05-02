@@ -6,7 +6,7 @@ gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk, AppIndicator3
 from bs4 import BeautifulSoup
 import requests as req
-import os,sys
+import os,sys,time
 
 def stop(source):
     Gtk.main_quit()
@@ -16,6 +16,7 @@ def get_data(command):
     global confirmed
     global recovered
     global deaths
+
     try:
         resp = req.get("https://news.google.com/covid19/map?hl=en-US&gl=US&ceid=US:en")
     except:
@@ -36,7 +37,7 @@ get_data('run')
 def create_menu():
     menu = Gtk.Menu()
     # menu item 1
-    item_info = Gtk.MenuItem.new_with_label('😷 '+str(confirmed)+'   💀 '+str(deaths)+'   ❤️  '+str(recovered))
+    item_info = Gtk.MenuItem.new_with_label('😷 Confirmed: '+str(confirmed)+';   😵  Deaths:  '+str(deaths)+';   ♥  Recovred:'+str(recovered)+';')
     item_refresh = Gtk.MenuItem.new_with_label('Refresh')
     item_refresh.connect('activate',get_data)
     item_about = Gtk.MenuItem.new_with_label('About')
